@@ -4,12 +4,14 @@ import "./viz.css";
 ////////////////////////////////////////////////////////////////////
 ////////////////////////////  Init  ///////////////////////////////
 const attributes = [
-  "pace",
-  "shooting",
-  "passing",
-  "dribbling",
-  "defending",
-  "physic",
+  "Food_quality",
+  "Speed_of_Service",
+  "Value_for_Money_Spent",
+  "Healthy_Options",
+  "Overall_Cleanliness",
+  "Staff_Friendliness",
+  "Curb_Appeal",
+  "Atmosphere",
 ];
 const radius = [0, 25, 50, 75, 100];
 
@@ -45,22 +47,20 @@ const radarLine = d3
   .radius((d) => radiusScale(selectedPlayer[d]));
 
 // svg elements
+let data = [];
 let players, selectedPlayer;
-let selectedName = "H. Son";
+let selectedName = "Five Guys";
 let radiusAxis, angleAxis;
 let path, points, labels;
 
 ////////////////////////////////////////////////////////////////////
 ////////////////////////////  Load CSV  ////////////////////////////
-let data = [];
 
-d3.json("data/fifa23_maleplayers.json")
+d3.json("data/best_burgers.json")
   .then((raw_data) => {
-    data = raw_data.filter((d) => d.overall > 85);
-    console.log(data);
-
-    players = [...new Set(data.map((d) => d.short_name))];
-    selectedPlayer = data.filter((d) => d.short_name === selectedName)[0];
+    data = raw_data;
+    players = [...new Set(data.map((d) => d.Brand))];
+    selectedPlayer = data.filter((d) => d.Brand === selectedName)[0];
 
     // Add dropdown
     const dropdown = document.getElementById("options");
@@ -111,10 +111,9 @@ d3.json("data/fifa23_maleplayers.json")
       .append("path")
       .datum(attributes)
       .attr("d", radarLine)
-      .attr("fill", "none")
-      .attr("stroke", pointColor)
+      .attr("fill", "black")
+      .attr("stroke", "black")
       .attr("stroke-width", 1.3)
-      .attr("fill", pointColor)
       .style("fill-opacity", 0.1);
 
     // points
@@ -142,7 +141,7 @@ d3.json("data/fifa23_maleplayers.json")
       .attr("class", "labels");
 
     // player name
-    d3.select("#player-name").text(selectedPlayer.long_name);
+    d3.select("#player-name").text(selectedPlayer.Brand);
   })
   .catch((error) => {
     console.error("Error loading CSV data: ", error);
@@ -151,7 +150,7 @@ d3.json("data/fifa23_maleplayers.json")
 ////////////////////////////////////////////////////////////////////
 ////////////////////////////  Update  //////////////////////////////
 const updatePlayer = () => {
-  selectedPlayer = data.filter((d) => d.short_name === selectedName)[0];
+  selectedPlayer = data.filter((d) => d.Brand === selectedName)[0];
 
   //  line
   radarLine.radius((d) => radiusScale(selectedPlayer[d]));
@@ -167,7 +166,7 @@ const updatePlayer = () => {
     .attr("cy", (d, i) => getYPos(selectedPlayer[d], i));
 
   // player name
-  d3.select("#player-name").text(selectedPlayer.long_name);
+  d3.select("#player-name").text(selectedPlayer.Brand);
 };
 
 ////////////////////////////////////////////////////////////////////

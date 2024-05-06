@@ -20,12 +20,14 @@ const g = svg
 let minLen = d3.min([height / 2 - margin.top, width / 2 - margin.right]);
 const radiusScale = d3.scaleLinear().domain([0, 100]).range([0, minLen]);
 const attributes = [
-  "pace",
-  "shooting",
-  "passing",
-  "dribbling",
-  "defending",
-  "physic",
+  "Food_Quality",
+  "Speed_of_Service",
+  "Value_for_Money_Spent",
+  "Healthy_Options",
+  "Overall_Cleanliness",
+  "Staff_Friendliness",
+  "Curb_Appeal",
+  "Atmosphere",
 ];
 const angleScale = d3
   .scaleLinear()
@@ -49,17 +51,19 @@ const radarLine = d3
 
 let data = [];
 let selectedplayer;
-let radiusAxis, angleAxis, labels, path;
+let path;
+let radiusAxis, angleAxis, labels;
 let players;
-let selectedName = "H. Son";
+let selectedName = "Five Guys";
 
-d3.json("data/fifa23_maleplayers.json").then((raw_data) => {
-  data = raw_data.filter((d) => d.overall > 85);
-  selectedplayer = data.filter((d) => d.short_name === selectedName)[0];
+d3.json("data/best_burgers.json").then((raw_data) => {
+  data = raw_data;
 
-  players = [...new Set(data.map((d) => d.short_name))];
+  players = [...new Set(data.map((d) => d.Brand))];
 
-  // console.log(players);
+  selectedplayer = data.filter((d) => d.Brand === selectedName)[0];
+
+  console.log(players);
 
   const dropdown = document.getElementById("options");
   players.map((d) => {
@@ -110,18 +114,19 @@ d3.json("data/fifa23_maleplayers.json").then((raw_data) => {
     .attr("x", (d, i) => getXPos(120, i))
     .attr("y", (d, i) => getYPos(120, i))
     .text((d) => d)
+    .attr("fill", "#ccc")
     .attr("class", "labels");
 
   path = g
     .append("path")
     .datum(attributes)
     .attr("d", radarLine)
-    .attr("fill", "rgba(0,0,255,0.1)")
-    .attr("stroke", "blue")
+    .attr("fill", "white")
+    .attr("stroke", "white")
     .attr("stroke-width", 1.3)
-    .style("fill-opacity", 0.6);
+    .style("fill-opacity", 0.2);
 
-  d3.select("#player-name").text(selectedplayer.long_name);
+  d3.select("#player-name").text(selectedplayer.Brand);
 });
 
 // function
@@ -138,13 +143,13 @@ const getYPos = (dist, index) => {
 
 // update
 const updatePlayer = () => {
-  selectedplayer = data.filter((d) => d.short_name == selectedName)[0];
+  selectedplayer = data.filter((d) => d.Brand == selectedName)[0];
 
   radarLine.radius((d) => radiusScale(selectedplayer[d]));
 
   path.transition().duration(600).attr("d", radarLine);
 
-  d3.select("#player-name").text(selectedplayer.long_name);
+  d3.select("#player-name").text(selectedplayer.Brand);
 };
 
 // resize

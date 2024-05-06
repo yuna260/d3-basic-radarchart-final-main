@@ -7,6 +7,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #000000;
 }
 
 .titles {
@@ -20,6 +21,7 @@
 }
 
 h1 {
+  color: #ddd;
   font-size: 19px;
   width: 100%;
   /* border-top: 1px solid #333;
@@ -30,6 +32,7 @@ h1 {
 }
 
 #player-name {
+  color: #f9f9f9;
   font-size: 48px;
   font-weight: 600;
   margin-bottom: 15px;
@@ -37,9 +40,9 @@ h1 {
 }
 
 #options {
-  color: #666;
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
+  color: #ffffff;
+  border: 1px solid #464646;
+  background-color: #000000;
 
   outline: 0;
 }
